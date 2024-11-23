@@ -4,12 +4,11 @@ import { initialState, reducer, actionTypes } from "../utils/Reducer";
 import AddMemberModal from "../components/forms/AddModal";
 
 const AdminDashboard = () => {
-  const { auth, logout } = useAuth(); 
+  const { auth, logout } = useAuth();
   const [state, dispatch] = useReducer(reducer, initialState);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [newMember, setNewMember] = useState({ email: "", role: "user" });
 
-  
   useEffect(() => {
     console.log("Current members state:", state.members);
   }, [state.members]);
@@ -36,13 +35,11 @@ const AdminDashboard = () => {
   };
 
   const handleLogout = () => {
-    logout(); 
+    logout();
   };
-
 
   const users = state.members.filter((member) => member.role === "user");
   const creators = state.members.filter((member) => member.role === "creator");
-
 
   useEffect(() => {
     console.log("Users:", users);
@@ -50,29 +47,47 @@ const AdminDashboard = () => {
   }, [users, creators]);
 
   return (
-    <div className="flex min-h-screen bg-gray-100">
-      <aside className="w-64 bg-gray-800 text-white">
-        <div className="p-4 text-2xl font-bold">Admin Panel</div>
-        <nav>
-          <ul>
-            <li className="p-4 hover:bg-gray-700">
-              Manage Users
+    <div className="flex min-h-screen bg-gray-100 font-spaceGrotesk">
+      {/* Sidebar */}
+      <div className="w-64 bg-gray-900 text-white min-h-screen flex flex-col">
+        {/* Logo or Header */}
+        <div className="p-6 border-b border-gray-700">
+          <h1 className="text-2xl font-bold tracking-wide text-center">Admin Panel</h1>
+        </div>
+
+        {/* Menu Items */}
+        <nav className="flex-1 overflow-y-auto">
+          <ul className="space-y-1 mt-4">
+         
+            <li>
+              <button
+                onClick={() => console.log("Manage Users clicked")}
+                className="w-full text-left px-6 py-3 text-gray-200 hover:bg-gray-800 hover:text-white transition-colors duration-300"
+              >
+                Manage Users
+              </button>
             </li>
-            <li className="p-4 hover:bg-gray-700">
-              Manage Creators
+            <li>
+              <button
+                onClick={() => console.log("Manage Creators clicked")}
+                className="w-full text-left px-6 py-3 text-gray-200 hover:bg-gray-800 hover:text-white transition-colors duration-300"
+              >
+                Manage Creators
+              </button>
             </li>
+            
           </ul>
         </nav>
-        <footer className="p-4 bg-gray-700">
-          Logged in as: <strong>{auth.role}</strong>
-        </footer>
-        <button
-          onClick={handleLogout}
-          className="w-full mt-4 p-2 text-center bg-red-600 text-white rounded hover:bg-red-700"
-        >
-          Logout
-        </button>
-      </aside>
+
+        <div className="p-6 border-t border-gray-700">
+          <button
+            onClick={handleLogout}
+            className="w-full mt-4 p-2 text-center bg-red-600 text-white rounded hover:bg-red-700"
+          >
+            Logout
+          </button>
+        </div>
+      </div>
 
       <main className="flex-1 p-8 bg-white">
         <header className="flex items-center justify-between pb-4 border-b border-gray-300">

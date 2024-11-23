@@ -1,10 +1,16 @@
 
 export const initialState = {
   members: [
-    { id: 1, email: "user1@example.com", role: "user" },
-    { id: 2, email: "vendor1@example.com", role: "creator" },
-    { id: 3, email: "user2@example.com", role: "user" },
-    { id: 4, email: "vendor2@example.com", role: "creator" },
+    { id: 1, email: "john.doe@example.com", role: "user" },
+    { id: 2, email: "jane.smith@example.com", role: "creator" },
+    { id: 3, email: "michael.jones@example.com", role: "user" },
+    { id: 4, email: "linda.brown@example.com", role: "creator" },
+    { id: 5, email: "john.doe@example.com", role: "user" },  
+    { id: 6, email: "jane.smith@example.com", role: "creator" }, 
+    { id: 7, email: "michael.jones@example.com", role: "user" },  
+    { id: 8, email: "linda.brown@example.com", role: "creator" }, 
+    { id: 9, email: "emma.white@example.com", role: "user" },
+    { id: 10, email: "oliver.green@example.com", role: "creator" },
   ],
 };
 

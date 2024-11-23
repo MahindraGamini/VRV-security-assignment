@@ -30,7 +30,7 @@ const Login = () => {
     const mockUsers = [
       { email: "admin@example.com", password: "admin123", role: "admin" },
       { email: "user@example.com", password: "user123", role: "user" },
-      { email: "vendor@example.com", password: "vendor123", role: "vendor" },
+      { email: "creator@example.com", password: "creator123", role: "vendor" },
     ];
 
     const user = mockUsers.find(
@@ -38,10 +38,10 @@ const Login = () => {
     );
 
     if (user) {
-      // Save auth data to context and localStorage
+    
       const userAuthData = { email: user.email, role: user.role };
       localStorage.setItem("auth", JSON.stringify(userAuthData));
-      setAuth(userAuthData); // Update auth in context
+      setAuth(userAuthData);
 
       // Navigate based on role
       if (user.role === "admin") {
