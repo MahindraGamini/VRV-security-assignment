@@ -1,70 +1,117 @@
-# Getting Started with Create React App
+Admin Dashboard - Role-Based Access Control (RBAC)
+This project implements a frontend for an Admin Dashboard where an admin can manage users, assign roles (creator or user), and allow creators to create and manage posts. Users can view posts and follow creators. The application demonstrates Role-Based Access Control (RBAC) using modern React techniques.
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-## Available Scripts
+Table of Contents
 
-In the project directory, you can run:
+Project Overview
 
-### `npm start`
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+Features
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+Technologies Used
 
-### `npm test`
+Project Structure
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
 
-### `npm run build`
+State Management
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+Routing & Permissions
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+How to Run the Project
 
-### `npm run eject`
+Project Overview
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+The Admin Dashboard allows the admin to:
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+View and manage users and creators.
+Assign or toggle roles between users and creators.
+Add new members to the system.
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
 
-## Learn More
+Creators can:
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+Create new posts.
+View their past posts.
+Users can:
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+View posts.
+Follow creators.
+Features
+Role Management: Admins can toggle user roles between "user" and "creator."
+Add Users: Admin can add new users to the system.
+Post Management: Creators can create posts, view past posts, and manage their content.
+Protected Routes: Access control to ensure users only have access to pages based on their roles.
+Shimmer Effect & Debounce: Optimized user interface with shimmer loading effect and debounce for input handling.
+Mobile-Responsive Sidebar: Sidebar that can be toggled on smaller screens for better usability.
+Technologies Used
+React: For building the UI components.
+React Context API: Used to manage global state such as posts and user roles.
+React Router: For handling navigation and protected routes.
+Reducer: Used for managing user roles and actions in a centralized way.
+Tailwind CSS: For styling the components and providing a responsive layout.
+Shimmer Effect: To show a loading skeleton while data is being fetched.
+Debounce: For handling delayed user input in forms (e.g., searching, adding members).
+Text Editor:Integrated TinyMCE for interactive bloging
+Project Structure:
+components/forms:Contains the login form and the add user form
+CreatorNav:The Navbar for the Creator
+Shimmer:The Shimer Effect Component 
+UserNav:Navbar for the user 
+Context:
+AuthContext:Setting up the context for the authentication 
+BlogContext:Setting the context for the posting a blog 
+pages:
+DashBoard:The AdminDashBoard 
+Following:The user can choose to follow and unfollow the creators
+PastBlogs:The History of the blogs posted by the Creator
+UnAuthorized:It shows the unauthorized page when the user is not permited at a particular page
+UserDashBoard:YThe UserDashboard contains the posts from the creators used dummydara api 
+Write:Alllows the creators to write their content and insert media/links.Integrated TinyMCE 
+utils:
+reducer:Contains all the state managment functions such as adding a user/creator, making creator as a user and vice versa and deleting a user and adding a post
+App.jsx:
+The App had the routers provided
+protectedRote.jsx:
+It contains the protected routes handling logic as per the roles they are directed
+State Management
+Context API: The application uses Context to manage global states such as posts, user roles, and login status. This allows components to access shared data without prop drilling.
+Reducer: The state of the users and their roles is managed using a reducer. This ensures that all state changes (like adding members, deleting, and toggling roles) are handled centrally.
+Routing & Permissions
+Protected Routes: Using React Router, the application includes protected routes to ensure that users who are not logged in or have insufficient permissions are redirected to an unauthorized page.
+Role-Based Access Control (RBAC): The admin can manage user roles (user/creator) using a toggle mechanism. Creators have the ability to create and view their posts, while users can only view posts and follow creators.
+How to Run the Project
+Prerequisites
+Make sure you have the following installed:
 
-### Code Splitting
+Node.js
+npm or yarn
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+Installation
 
-### Analyzing the Bundle Size
+Clone the repository:https://github.com/MahindraGamini/VRV-security-assignment
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
 
-### Making a Progressive Web App
+git clone https://github.com/MahindraGamini/VRV-security-assignment
+cd VRV-security-assignment
+Install the dependencies:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
 
-### Advanced Configuration
+npm install
+# or
+yarn install
+Start the development server:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
 
-### Deployment
+npm start
+# or
+yarn start
+Open your browser and visit:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
 
-### `npm run build` fails to minify
+http://localhost:3000
+Conclusion
+This application showcases how to implement Role-Based Access Control (RBAC) in React with features like user management, post creation, and efficient state management using React Context and Reducer. The application has been designed to be scalable, maintainable, and user-friendly while utilizing modern frontend practices.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
