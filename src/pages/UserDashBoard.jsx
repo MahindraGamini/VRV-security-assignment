@@ -51,7 +51,7 @@ const UserDashboard = () => {
                 <h2 className="text-lg font-semibold text-gray-800">{post.title}</h2>
                 <p className="text-sm text-gray-600 mt-2">{post.body.slice(0, 100)}...</p>
                 
-                {/* Tags */}
+             
                 <div className="mt-2 text-xs text-gray-500">
                   {post.tags?.map((tag, idx) => (
                     <span key={idx} className="mr-2 inline-block bg-gray-200 px-2 py-1 rounded-full">
@@ -60,7 +60,7 @@ const UserDashboard = () => {
                   ))}
                 </div>
                 
-                {/* Reactions and Views */}
+             
                 <div className="flex justify-between text-sm text-gray-500 mt-4">
                   <span>{post.reactions?.likes} Likes</span>
                   <span>{post.reactions?.dislikes} Dislikes</span>
