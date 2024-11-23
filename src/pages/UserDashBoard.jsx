@@ -37,11 +37,9 @@ const UserDashboard = () => {
 
   return (
     <div className="flex min-h-screen bg-gray-100 font-spaceGrotesk">
-      {/* Sidebar */}
       <Sidebar />
 
-      {/* Main Content */}
-      <main className="ml-64 flex-1 p-8 bg-white">
+      <main className="ml-0 sm:ml-64 flex-1 p-8 bg-white transition-all duration-300">
         <h1 className="text-3xl font-bold text-gray-800 mb-6 text-center">
           Trending News
         </h1>

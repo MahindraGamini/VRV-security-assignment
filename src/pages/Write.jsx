@@ -8,34 +8,40 @@ import "react-toastify/dist/ReactToastify.css";
 const WriteBlog = () => {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false); 
   const { addBlog } = useBlogs();
 
   const handleSubmit = (e) => {
     e.preventDefault();
     if (title && content) {
       addBlog({ title, content, date: new Date().toLocaleDateString() });
-      setTitle(""); // Reset title
-      setContent(""); // Reset content after submission
-      toast.success("Your blog post has been successfully published!"); // Success message
+      setTitle(""); 
+      setContent("");
+      toast.success("Your blog post has been successfully published!"); 
     } else {
-      toast.error("All fields are required. Please fill in the title and content."); // Error message
+      toast.error("All fields are required. Please fill in the title and content."); 
     }
   };
 
   return (
-    <div className="write-blog-container flex">
-     
-      <CSidebar />
+    <div className="write-blog-container flex min-h-screen bg-gray-100">
+   
+      <CSidebar isOpen={isSidebarOpen} />
 
-    
-      <main className="flex-1 ml-64 p-8 bg-gray-50 font-spaceGrotesk">
-        <h1 className="text-3xl font-semibold text-gray-800 mb-6">Write a New Blog Post</h1>
+      
+      <main
+        className={`flex-1 transition-all duration-300 ${
+          isSidebarOpen ? "ml-64 sm:ml-64" : "ml-0 sm:ml-64"
+        } p-8 bg-gray-50 font-spaceGrotesk`}
+      >
+        <h1 className="text-2xl sm:text-3xl font-semibold text-gray-800 mb-6 text-center sm:text-left">
+          Write a New Blog Post
+        </h1>
 
         <form
           onSubmit={handleSubmit}
-          className="bg-white shadow-md rounded-lg p-6 space-y-6"
+          className="bg-white shadow-md rounded-lg p-6 space-y-6 max-w-3xl mx-auto"
         >
-          {/* Post Title */}
           <div className="form-group">
             <label
               htmlFor="title"
@@ -77,7 +83,6 @@ const WriteBlog = () => {
             />
           </div>
 
-          {/* Submit Button */}
           <button
             type="submit"
             className="w-full py-3 bg-orange-500 text-white text-lg font-medium rounded-lg hover:bg-blue-700 transition duration-300"

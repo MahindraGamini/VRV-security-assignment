@@ -5,10 +5,8 @@ import Sidebar from "../components/UserNav";
 const Following = () => {
   const [state, dispatch] = useReducer(reducer, initialState);
 
-  // Filter members with the "creator" role
   const creators = state.members.filter((member) => member.role === "creator");
 
-  // Handle follow/unfollow actions
   const toggleFollow = (id) => {
     dispatch({ type: actionTypes.TOGGLE_FOLLOW, id });
   };
@@ -17,8 +15,11 @@ const Following = () => {
     <div className="flex min-h-screen font-spaceGrotesk bg-[#F9FAFB]">
       <Sidebar />
 
-      <main className="ml-64 flex-1 p-8">
-        <h1 className="text-3xl font-bold mb-6 text-[#1F74BA]">Explore Creators</h1>
+      <main className="ml-0 sm:ml-64 flex-1 p-8 transition-all duration-300">
+        <h1 className="text-3xl font-bold mb-6 text-[#1F74BA] text-center sm:text-left">
+          Explore Creators
+        </h1>
+
         {creators.length > 0 ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
             {creators.map((creator) => (

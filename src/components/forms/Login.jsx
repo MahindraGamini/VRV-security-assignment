@@ -7,7 +7,7 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const navigate = useNavigate();
-  const { setAuth } = useAuth(); // Use the `setAuth` function from context
+  const { setAuth } = useAuth(); 
 
   useEffect(() => {
     // If the user is already logged in, redirect to the dashboard
