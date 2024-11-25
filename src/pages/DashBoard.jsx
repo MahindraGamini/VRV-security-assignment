@@ -7,7 +7,7 @@ const AdminDashboard = () => {
   const { auth, logout } = useAuth();
   const [state, dispatch] = useReducer(reducer, initialState);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [newMember, setNewMember] = useState({ email: "", role: "user" });
+  const [newMember, setNewMember] = useState({ email: "", role: "" });
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
 
   useEffect(() => {

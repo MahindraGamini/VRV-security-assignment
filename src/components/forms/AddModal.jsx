@@ -20,13 +20,14 @@ const AddMemberModal = ({ isOpen, setIsOpen, newMember, setNewMember, handleAddM
         <div className="mb-4">
           <label className="block text-gray-700">Role:</label>
           <select
-            value={newMember.role}
-            onChange={(e) => setNewMember({ ...newMember, role: e.target.value })}
-            className="w-full border rounded px-3 py-2 mt-1"
-          >
-            <option value="user">User</option>
-            <option value="vendor">Creator</option>
-          </select>
+  value={newMember.role}
+  onChange={(e) => setNewMember({ ...newMember, role: e.target.value })}
+  className="w-full border rounded px-3 py-2 mt-1"
+>
+  <option value="user">User</option>
+  <option value="creator">Creator</option>
+</select>
+
         </div>
         <div className="flex justify-end">
           <button
