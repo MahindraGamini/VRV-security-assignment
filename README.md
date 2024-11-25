@@ -16,7 +16,8 @@ The Admin Dashboard enables the following functionalities:
 
 Admin Features
     View and manage users and creators.
-    Assign or toggle roles between users and creators.
+    Assign or toggle roles
+    Add new roles
     Add new members to the system.
 Creator Features
     Create new posts.
