@@ -1,110 +1,91 @@
 import React, { useReducer, useState, useEffect } from "react";
-import { useAuth } from "../context/AuthContext";
 import { initialState, reducer, actionTypes } from "../utils/Reducer";
-import AddMemberModal from "../components/forms/AddModal";
+import { AddMemberModal } from "../components/forms/AddModal";
 
 const AdminDashboard = () => {
-  const { auth, logout } = useAuth();
   const [state, dispatch] = useReducer(reducer, initialState);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [newMember, setNewMember] = useState({ email: "", role: "" });
-  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+  const [newRole, setNewRole] = useState("");
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   useEffect(() => {
-    console.log("Current members state:", state.members);
-  }, [state.members]);
-
-  const handleRoleChange = (id) => {
-    dispatch({ type: actionTypes.TOGGLE_ROLE, id });
-  };
-
-  const handleDelete = (id) => {
-    const confirmed = window.confirm("Are you sure you want to delete this member?");
-    if (confirmed) {
-      dispatch({ type: actionTypes.DELETE_MEMBER, id });
-    }
-  };
+    console.log("Current members:", state.members);
+    console.log("Available roles:", state.roles);
+  }, [state]);
 
   const handleAddMember = () => {
     if (newMember.email.trim()) {
       dispatch({ type: actionTypes.ADD_MEMBER, payload: newMember });
-      setNewMember({ email: "", role: "user" });
+      setNewMember({ email: "", role: state.roles[0] }); // Reset member form
       setIsModalOpen(false);
     } else {
       alert("Please provide a valid email.");
     }
   };
 
-  const handleLogout = () => {
-    logout();
+  const handleRoleChange = (id, newRole) => {
+    dispatch({ type: actionTypes.UPDATE_MEMBER_ROLE, payload: { id, role: newRole } });
   };
 
-  const users = state.members.filter((member) => member.role === "user");
-  const creators = state.members.filter((member) => member.role === "creator");
+  const handleDeleteMember = (id) => {
+    if (window.confirm("Are you sure you want to delete this member?")) {
+      dispatch({ type: actionTypes.DELETE_MEMBER, payload: id });
+    }
+  };
 
-  useEffect(() => {
-    console.log("Users:", users);
-    console.log("Creators:", creators);
-  }, [users, creators]);
+  const handleAddRole = () => {
+    if (newRole.trim() && !state.roles.includes(newRole)) {
+      dispatch({ type: actionTypes.ADD_ROLE, payload: newRole.trim() });
+      setNewRole(""); // Reset role input
+    } else {
+      alert("Invalid or duplicate role.");
+    }
+  };
+
+  const handleDeleteRole = (role) => {
+    if (window.confirm(`Are you sure you want to delete the role "${role}"?`)) {
+      dispatch({ type: actionTypes.REMOVE_ROLE, payload: role });
+    }
+  };
 
   return (
-    <div className="flex min-h-screen bg-gray-100 font-spaceGrotesk">
-      <div
-        className={`w-64 bg-gray-900 text-white min-h-screen flex flex-col transition-all duration-300 ${
-          isSidebarOpen ? "block" : "hidden sm:block"
-        }`}
+    <div className="flex min-h-screen  bg-gray-100 font-sans">
+      <aside
+        className={`fixed lg:relative ${
+          isSidebarOpen ? "translate-x-0" : "-translate-x-full"
+        } lg:translate-x-0 transition-transform duration-300 ease-in-out w-64 bg-gray-900 text-white min-h-screen z-40 shadow-lg`}
       >
-        <div className="p-6 border-b border-gray-700">
-          <h1 className="text-2xl font-bold tracking-wide text-center">Admin Panel</h1>
+        <div className="p-6 flex justify-between items-center border-b border-gray-800">
+          <h1 className="text-xl font-bold py-5">Admin Dashboard</h1>
         </div>
-
-        <nav className="flex-1 overflow-y-auto">
-          <ul className="space-y-1 mt-4">
-            <li>
-              <button
-                onClick={() => console.log("Manage Users clicked")}
-                className="w-full text-left px-6 py-3 text-gray-200 hover:bg-gray-800 hover:text-white transition-colors duration-300"
-              >
-                Manage Users
+        <nav className="flex-1 p-6">
+          <ul>
+            <li className="mb-2">
+              <button className="w-full text-left px-4 py-2 hover:bg-gray-800 rounded">
+                Manage Members
               </button>
             </li>
             <li>
-              <button
-                onClick={() => console.log("Manage Creators clicked")}
-                className="w-full text-left px-6 py-3 text-gray-200 hover:bg-gray-800 hover:text-white transition-colors duration-300"
-              >
-                Manage Creators
+              <button className="w-full text-left px-4 py-2 hover:bg-gray-800 rounded">
+                Manage Roles
               </button>
             </li>
           </ul>
         </nav>
+      </aside>
 
-        <div className="p-6 border-t border-gray-700">
-          <button
-            onClick={handleLogout}
-            className="w-full mt-4 p-2 text-center bg-red-600 text-white rounded hover:bg-red-700"
-          >
-            Logout
-          </button>
-        </div>
-      </div>
+      <button
+        onClick={() => setIsSidebarOpen(!isSidebarOpen)} // Toggle the sidebar state
+        className="fixed left-2 lg:hidden px-4 py-2 bg-blue-600 text-white rounded shadow-md hover:bg-blue-700 z-50"
+      >
+        ☰
+      </button>
 
+      {/* Main Content */}
       <main className="flex-1 p-8 bg-white">
-        <div className="block sm:hidden p-4">
-          <button
-            onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-            className="text-gray-800 focus:outline-none"
-          >
-            {isSidebarOpen ? (
-              <span className="text-xl">&#x2715; Close</span>
-            ) : (
-              <span className="text-xl">&#9776; Open</span>
-            )}
-          </button>
-        </div>
-
-        <header className="flex items-center justify-between pb-4 border-b border-gray-300">
-          <h1 className="text-3xl font-semibold text-gray-800">Welcome, {auth.role}</h1>
+        <header className="flex items-center justify-between pb-4 border-b">
+          <h1 className="text-2xl font-bold text-gray-800">Members Management</h1>
           <button
             onClick={() => setIsModalOpen(true)}
             className="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700"
@@ -113,98 +94,78 @@ const AdminDashboard = () => {
           </button>
         </header>
 
-        <section id="manage-users" className="my-8">
-          <h2 className="text-2xl font-bold text-gray-800 mb-4">Manage Users</h2>
-          {users.length === 0 ? (
-            <p>No users found</p>
-          ) : (
-            <div className="overflow-x-auto">
-              <table className="min-w-full bg-gray-50 shadow-md rounded-lg">
-                <thead>
-                  <tr>
-                    <th className="py-2 px-4 text-left bg-gray-200 text-gray-700 text-sm sm:text-base">
-                      Email
-                    </th>
-                    <th className="py-2 px-4 text-left bg-gray-200 text-gray-700 text-sm sm:text-base">
-                      Role
-                    </th>
-                    <th className="py-2 px-4 text-left bg-gray-200 text-gray-700 text-sm sm:text-base">
-                      Actions
-                    </th>
+        <section className="mt-8">
+          <h2 className="text-xl font-semibold text-gray-800 mb-4">Members</h2>
+          <div className="overflow-x-auto">
+            <table className="min-w-full bg-gray-50 shadow-md rounded-lg">
+              <thead>
+                <tr>
+                  <th className="py-2 px-4 text-left bg-gray-200 text-gray-700">Email</th>
+                  <th className="py-2 px-4 text-left bg-gray-200 text-gray-700">Role</th>
+                  <th className="py-2 px-4 text-left bg-gray-200 text-gray-700">Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                {state.members.map((member) => (
+                  <tr key={member.id}>
+                    <td className="py-2 px-4 border">{member.email}</td>
+                    <td className="py-2 px-4 border">{member.role}</td>
+                    <td className="py-2 px-4 border">
+                      <select
+                        value={member.role}
+                        onChange={(e) => handleRoleChange(member.id, e.target.value)}
+                        className="mr-2 px-2 py-1 border rounded"
+                      >
+                        {state.roles.map((role) => (
+                          <option key={role} value={role}>
+                            {role}
+                          </option>
+                        ))}
+                      </select>
+                      <button
+                        onClick={() => handleDeleteMember(member.id)}
+                        className="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700"
+                      >
+                        Delete
+                      </button>
+                    </td>
                   </tr>
-                </thead>
-                <tbody>
-                  {users.map((user) => (
-                    <tr key={user.id}>
-                      <td className="py-2 px-4 border text-sm sm:text-base">{user.email}</td>
-                      <td className="py-2 px-4 border text-sm sm:text-base">{user.role}</td>
-                      <td className="py-2 px-4 border text-sm sm:text-base">
-                        <button
-                          onClick={() => handleRoleChange(user.id)}
-                          className="px-2 sm:px-4 py-1 sm:py-2 bg-blue-600 text-white rounded-md mr-2 hover:bg-blue-700 text-xs sm:text-sm"
-                        >
-                          Make Creator
-                        </button>
-                        <button
-                          onClick={() => handleDelete(user.id)}
-                          className="px-2 sm:px-4 py-1 sm:py-2 bg-red-600 text-white rounded-md hover:bg-red-700 text-xs sm:text-sm"
-                        >
-                          Delete
-                        </button>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          )}
+                ))}
+              </tbody>
+            </table>
+          </div>
         </section>
 
-        <section id="manage-creators" className="my-8">
-          <h2 className="text-2xl font-bold text-gray-800 mb-4">Manage Creators</h2>
-          {creators.length === 0 ? (
-            <p>No creators found</p>
-          ) : (
-            <div className="overflow-x-auto">
-              <table className="min-w-full bg-gray-50 shadow-md rounded-lg">
-                <thead>
-                  <tr>
-                    <th className="py-2 px-4 text-left bg-gray-200 text-gray-700 text-sm sm:text-base">
-                      Email
-                    </th>
-                    <th className="py-2 px-4 text-left bg-gray-200 text-gray-700 text-sm sm:text-base">
-                      Role
-                    </th>
-                    <th className="py-2 px-4 text-left bg-gray-200 text-gray-700 text-sm sm:text-base">
-                      Actions
-                    </th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {creators.map((creator) => (
-                    <tr key={creator.id}>
-                      <td className="py-2 px-4 border text-sm sm:text-base">{creator.email}</td>
-                      <td className="py-2 px-4 border text-sm sm:text-base">{creator.role}</td>
-                      <td className="py-2 px-4 border text-sm sm:text-base">
-                        <button
-                          onClick={() => handleRoleChange(creator.id)}
-                          className="px-2 sm:px-4 py-1 sm:py-2 bg-blue-600 text-white rounded-md mr-2 hover:bg-blue-700 text-xs sm:text-sm"
-                        >
-                          Make User
-                        </button>
-                        <button
-                          onClick={() => handleDelete(creator.id)}
-                          className="px-2 sm:px-4 py-1 sm:py-2 bg-red-600 text-white rounded-md hover:bg-red-700 text-xs sm:text-sm"
-                        >
-                          Delete
-                        </button>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          )}
+        <section className="mt-12">
+          <h2 className="text-xl font-semibold text-gray-800 mb-4">Roles Management</h2>
+          <div className="mb-4 flex items-center">
+            <input
+              type="text"
+              value={newRole}
+              onChange={(e) => setNewRole(e.target.value)}
+              className="border rounded px-4 py-2 mr-4"
+              placeholder="Add new role"
+            />
+            <button
+              onClick={handleAddRole}
+              className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+            >
+              Add Role
+            </button>
+          </div>
+          <ul>
+            {state.roles.map((role) => (
+              <li key={role} className="flex items-center justify-between mb-2">
+                <span>{role}</span>
+                <button
+                  onClick={() => handleDeleteRole(role)}
+                  className="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700"
+                >
+                  Delete
+                </button>
+              </li>
+            ))}
+          </ul>
         </section>
       </main>
 
@@ -214,6 +175,7 @@ const AdminDashboard = () => {
         newMember={newMember}
         setNewMember={setNewMember}
         handleAddMember={handleAddMember}
+        roles={state.roles}
       />
     </div>
   );

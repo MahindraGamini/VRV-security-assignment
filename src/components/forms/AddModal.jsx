@@ -1,8 +1,8 @@
-import React from 'react';
+import React from "react";
 
-const AddMemberModal = ({ isOpen, setIsOpen, newMember, setNewMember, handleAddMember }) => {
+ export const AddMemberModal = ({ isOpen, setIsOpen, newMember, setNewMember, handleAddMember, roles }) => {
   if (!isOpen) return null;
-    console.log(newMember)
+
   return (
     <div className="fixed inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center">
       <div className="bg-white rounded-lg shadow-lg p-6 w-96">
@@ -20,19 +20,21 @@ const AddMemberModal = ({ isOpen, setIsOpen, newMember, setNewMember, handleAddM
         <div className="mb-4">
           <label className="block text-gray-700">Role:</label>
           <select
-  value={newMember.role}
-  onChange={(e) => setNewMember({ ...newMember, role: e.target.value })}
-  className="w-full border rounded px-3 py-2 mt-1"
->
-  <option value="user">User</option>
-  <option value="creator">Creator</option>
-</select>
-
+            value={newMember.role}
+            onChange={(e) => setNewMember({ ...newMember, role: e.target.value })}
+            className="w-full border rounded px-3 py-2 mt-1"
+          >
+            {roles.map((role) => (
+              <option key={role} value={role}>
+                {role.charAt(0).toUpperCase() + role.slice(1)}
+              </option>
+            ))}
+          </select>
         </div>
         <div className="flex justify-end">
           <button
             onClick={() => setIsOpen(false)}
-            className="px-4 py-2 bg-gray-600 text-white rounded mr-2 hover:bg-gray-700"
+            className="px-4 py-2 bg-gray-300 text-gray-700 rounded hover:bg-gray-400 mr-2"
           >
             Cancel
           </button>

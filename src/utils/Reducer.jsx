@@ -1,59 +1,50 @@
-
-export const initialState = {
-  members: [
-    { id: 1, email: "john.doe@example.com", role: "user" },
-    { id: 2, email: "jane.smith@example.com", role: "creator" },
-    { id: 3, email: "michael.jones@example.com", role: "user" },
-    { id: 4, email: "linda.brown@example.com", role: "creator" },
-    { id: 5, email: "john.doe@example.com", role: "user" },  
-    { id: 6, email: "jane.smith@example.com", role: "creator" }, 
-    { id: 7, email: "michael.jones@example.com", role: "user" },  
-    { id: 8, email: "linda.brown@example.com", role: "creator" }, 
-    { id: 9, email: "emma.white@example.com", role: "user" },
-    { id: 10, email: "oliver.green@example.com", role: "creator" },
-  ],
+export const actionTypes = {
+  ADD_MEMBER: "ADD_MEMBER",
+  DELETE_MEMBER: "DELETE_MEMBER",
+  UPDATE_MEMBER_ROLE: "UPDATE_MEMBER_ROLE",
+  ADD_ROLE: "ADD_ROLE",
+  REMOVE_ROLE: "REMOVE_ROLE",
 };
 
-export const actionTypes = {
-  TOGGLE_ROLE: "TOGGLE_ROLE",
-  DELETE_MEMBER: "DELETE_MEMBER",
-  ADD_MEMBER:"ADD_MEMBER",
-  
+export const initialState = {
+  members: [],
+  roles: ["user", "creator"], 
 };
 
 export const reducer = (state, action) => {
   switch (action.type) {
-    case actionTypes.TOGGLE_ROLE:
+    case actionTypes.ADD_MEMBER:
       return {
         ...state,
-        members: state.members.map((member) =>
-          member.id === action.id
-            ? { ...member, role: member.role === "user" ? "creator" : "user" }
-            : member
-        ),
+        members: [
+          ...state.members,
+          { id: Date.now(), email: action.payload.email, role: action.payload.role },
+        ],
       };
     case actionTypes.DELETE_MEMBER:
       return {
         ...state,
-        members: state.members.filter((member) => member.id !== action.id),
+        members: state.members.filter((member) => member.id !== action.payload),
       };
-    case actionTypes.ADD_MEMBER:
-        return{
-          ...state,
-          members:[
-            ...state.members,
-            {id:Date.now(),email:action.payload.email,role:action.payload.role}
-          ]
-        };
-        case actionTypes.TOGGLE_FOLLOW: 
-        return {
-          ...state,
-          members: state.members.map((member) =>
-            member.id === action.id
-              ? { ...member, isFollowing: !member.isFollowing }
-              : member
-          ),
-        };
+    case actionTypes.UPDATE_MEMBER_ROLE:
+      return {
+        ...state,
+        members: state.members.map((member) =>
+          member.id === action.payload.id
+            ? { ...member, role: action.payload.role }
+            : member
+        ),
+      };
+    case actionTypes.ADD_ROLE:
+      return {
+        ...state,
+        roles: [...state.roles, action.payload],
+      };
+    case actionTypes.REMOVE_ROLE:
+      return {
+        ...state,
+        roles: state.roles.filter((role) => role !== action.payload),
+      };
     default:
       return state;
   }
